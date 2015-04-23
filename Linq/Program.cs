@@ -44,11 +44,11 @@ namespace Linq
         {
             //ShowList(Bands);
 
-            var bandMinAlbums = Bands.Min(b => b.StudioAlbums);
-            Console.WriteLine(bandMinAlbums.ToString());
+            //var bandMinAlbums = Bands.Min(b => b.StudioAlbums);
+            //Console.WriteLine(bandMinAlbums.ToString());
 
-            var bandMaxAlbums = Bands.Max(b => b.StudioAlbums);
-            Console.WriteLine(bandMaxAlbums.ToString());
+            //var bandMaxAlbums = Bands.Max(b => b.StudioAlbums);
+            //Console.WriteLine(bandMaxAlbums.ToString());
 
             //var filteredBands = StartsWith("L");
             //ShowList(filteredBands);
@@ -120,9 +120,13 @@ namespace Linq
         {
             var myBands = GetBands();
 
-            //...Your code here....
+            var filter = from band in myBands
+                         where band.StudioAlbums > noOfAlbums
+                         select band;
+            
+            
 
-            ShowList(myBands);
+            ShowList(filter);
         }
 
         #endregion

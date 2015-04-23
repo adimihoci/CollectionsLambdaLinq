@@ -24,11 +24,12 @@ namespace Collections
 
         static void Main(string[] args)
         {
-            EnumerableExample();
+            //EnumerableExample();
             //YieldExample();
             //CollectionExample();
             //ListExample();
-            //DictionaryExample();
+            DictionaryExample();
+            
         }
 
         private static void EnumerableExample()
@@ -62,13 +63,13 @@ namespace Collections
             Console.WriteLine();
 
             //Projecting objects in a different form using yield
-            var bandNames = BandNames(new List<Band>(BandsArray));
-            foreach (var bandName in bandNames)
-            {
-                Console.WriteLine(bandName);
-            }
+            //var bandNames = BandNames(new List<Band>(BandsArray));
+            //foreach (var bandName in bandNames)
+            //{
+            //    Console.WriteLine(bandName);
+            //}
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
             //TODO 2: Implement "BritishBands" to return only bands that have Country == "England". 
             var britishBands = BritishBands(new List<Band>(BandsArray));
@@ -76,6 +77,8 @@ namespace Collections
             {
                 Console.WriteLine(britishBand.Name);
             }
+
+            Console.WriteLine();
         }
 
         private static void CollectionExample()
@@ -103,6 +106,13 @@ namespace Collections
                 Console.WriteLine(bandName);
             }
 
+            foreach (var bandName in BritishBands(bandsCollection))
+            {
+                Console.WriteLine(bandName);
+            }
+
+            Console.WriteLine();
+
             //TODO 3: Update bandsCollection.Clear() so it prints the removed items.
         }
 
@@ -114,10 +124,11 @@ namespace Collections
             var bandsList = new List<Band>(BandsArray);
 
             //Custom comparer example
-            bandsList.Sort(new BasicBandsComparer());
+            //bandsList.Sort(new BasicBandsComparer());
             //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.Country));
             //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.Name));
             //bandsList.Sort(new CustomBandsComparer(BandsCompareBy.AlbumCount));
+            bandsList.Sort(new CustomBandsComparer(BandsCompareBy.NameLength));
 
             var index = 0;
             foreach (var band in bandsList)
@@ -169,7 +180,7 @@ namespace Collections
             foreach (var keyValuePair in bandsDictionary)
             {
                 //TODO 5: Change to display key and albums count
-                Console.WriteLine("Key: {0}, Value: {1}", keyValuePair.Key, keyValuePair.Value);
+                Console.WriteLine("Key: {0}, Value: {1}", keyValuePair.Key, keyValuePair.Value.StudioAlbums);
             }
 
             Console.WriteLine();
@@ -177,12 +188,22 @@ namespace Collections
             //Retrieving value based on key example
             var bandToGet = bandsDictionary["Muse"];
             Console.WriteLine("{0} {1} {2}", bandToGet.Name, bandToGet.Genre, bandToGet.Country);
-
             Console.WriteLine();
 
+           
+
             //TODO 7: Check if key is present before adding/retrieving a new entry.
-            //bandsDictionary.Add("Muse", new Band("Muse", 6, "Alternative Rock", "England"));
-            //Console.WriteLine(bandsDictionary["Guta"].Name);
+
+            
+            if (bandsDictionary.ContainsKey(bandsDictionary["Muse"].Name))
+            {
+                Console.WriteLine("Cheie existenta");
+            }
+            else
+            {
+                bandsDictionary.Add("Muse", new Band("Muse", 6, "Alternative Rock", "England"));
+            }
+            
         }
 
         private static IEnumerable<string> FrontmenList()
@@ -208,7 +229,14 @@ namespace Collections
 
         private static IEnumerable<Band> BritishBands(IEnumerable<Band> bandsList)
         {
-            yield return new Band("", 0, "", "");
+            foreach (var band in bandsList)
+            {
+                if (band.Country == "England")
+                {
+                    yield return band;
+                }
+            }
+            
         }
 
     }
